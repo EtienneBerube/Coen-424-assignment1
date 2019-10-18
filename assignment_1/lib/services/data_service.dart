@@ -1,16 +1,16 @@
-import 'package:aqueduct/aqueduct.dart';
-import 'dart:io';
-import 'package:csv/csv.dart';
-import 'dart:convert';
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:aqueduct/aqueduct.dart';
 
 class DataService {
   static const _metrics = [
-    "CPUUtilization_Average",
-    "NetworkIn_Average",
-    "NetworkOut_Average",
-    "MemoryUtilization_Average",
-    "Final_Target"
+    "cpuutilization_average",
+    "networkIn_average",
+    "networkOut_average",
+    "memoryutilization_average",
+    "final_target"
   ];
   List<List<dynamic>> dvd_training;
   List<List<dynamic>> dvd_test;
@@ -23,23 +23,62 @@ class DataService {
 
   void initialize() async {
     print(Directory.current);
-    dvd_training = await getFromCSV('DVD-training.csv');
-    dvd_test = await getFromCSV('DVD-testing.csv');
-    ndbench_test = await getFromCSV('NDBench-testing.csv');
-    ndbench_training = await getFromCSV('NDBench-training.csv');
-    print(dvd_training.toString() +
-        "\n****************************************************************");
-    print(dvd_test.toString() +
-        "\n****************************************************************");
-    print(ndbench_training.toString() +
-        "\n****************************************************************");
-    print(ndbench_test.toString() +
-        "\n****************************************************************");
+    dvd_training = await _getFromCSV('DVD-training.csv');
+    dvd_test = await _getFromCSV('DVD-testing.csv');
+    ndbench_test = await _getFromCSV('NDBench-testing.csv');
+    ndbench_training = await _getFromCSV('NDBench-training.csv');
+    print("Initialization of DVD-TRAINING " + (dvd_training.length > 0 ? "succeded":"failed"));
+    print("Initialization of DVD-TEST " + (dvd_test.length > 0 ? "succeded":"failed"));
+    print("Initialization of NDBENCH-TRAINING " + (ndbench_training.length > 0 ? "succeded":"failed"));
+    print("Initialization of NDBENCH-TEST " + (ndbench_test.length > 0 ? "succeded":"failed"));
   }
 
-  Future<List<List>> getFromCSV(String filename) async {
+
+  List<double> getData(
+      String resource, String metric, int batchUnit, int batchId, int batchSize) {
+    final selection = _getDataset(resource);
+
+    if (selection == null)
+      throw ValidationException(
+          ["Cannot find data set for ${resource}"]);
+
+    final availableBatches = (selection.length / batchUnit).toInt();
+
+    if ((batchId-1) +batchSize > (availableBatches -(batchId-1))) {
+      throw ValidationException(
+          ["Cannot get ${batchSize}, only have ${availableBatches} available"]);
+    }
+
+    final offset = batchUnit*(batchId-1);
+    final endIndex = offset + (batchUnit)*(batchSize);
+
+    return selection.sublist(offset, endIndex).map((row) => row[_getMetricIndex(metric)]).cast<double>().toList();
+  }
+
+  int getLastBatchId(String resource, String metric, int batchUnit, int batchId, int batchSize){
+    final selection = _getDataset(resource);
+
+    if (selection == null)
+      throw ValidationException(
+          ["Cannot find data set for ${resource}"]);
+
+    final availableBatches = (selection.length / batchUnit).toInt();
+
+    if (batchSize > (availableBatches - batchId)) {
+      throw ValidationException(
+          ["Cannot get ${batchSize}, only have ${availableBatches} available"]);
+    }
+
+    return (batchId -1) + batchSize;
+  }
+
+
+  Future<List<List>> _getFromCSV(String filename) async {
     return await File('lib/resources/${filename}')
         .openRead()
+        .handleError((error){
+      print("Error when opening ${filename}");
+    })
         .transform(utf8.decoder) // Decode bytes to UTF-8.
         .transform(LineSplitter())
         .skip(1) // Convert stream to individual lines.
@@ -47,41 +86,31 @@ class DataService {
       // Process results.
 
       final row =
-          line.split(',').map((element) => double.parse(element)).toList();
+      line.split(',').map((element) => double.parse(element)).toList();
       return row;
     }).toList();
   }
 
-  List<double> getData(
-      String resource, String type, int batchUnit, int batchId, int batchSize) {
-    final selection = getDataset(resource, type);
-
-    if (selection == null)
-      throw ValidationException(
-          ["Cannot find data set for ${resource}-${type}"]);
-
-    final availableBatches = (selection.length / batchUnit) as int;
-
-    if (batchSize > (availableBatches - batchId)) {
-      throw ValidationException(
-          ["Cannot get ${batchSize}, only have ${availableBatches} available"]);
-    }
-  }
-
-  List<List<dynamic>> getDataset(String resource, String type) {
-    if (resource == 'NDBench') {
-      if (type == 'testing') {
+  List<List<dynamic>> _getDataset(String resource) {
+    String product = resource.split('-')[0].toLowerCase();
+    String dataset = resource.split('-')[1].toLowerCase();
+    if (product == 'ndbench') {
+      if (dataset == 'testing') {
         return ndbench_test;
-      } else if (type == 'trainig') {
+      } else if (dataset == 'trainig') {
         return ndbench_training;
       }
-    } else if (resource == 'DVD') {
-      if (type == 'testing') {
+    } else if (product == 'dvd') {
+      if (dataset == 'testing') {
         return dvd_test;
-      } else if (type == 'training') {
+      } else if (dataset == 'training') {
         return dvd_training;
       }
     }
     return null;
+  }
+
+  int _getMetricIndex(String metric){
+   return _metrics.indexOf(metric.toLowerCase());
   }
 }
