@@ -5,7 +5,7 @@ import '../services/data_service.dart';
 
 class DataController extends Controller{
 
-  DataService _dataService;
+  final DataService _dataService;
 
   DataController(this._dataService);
 

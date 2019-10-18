@@ -3,7 +3,7 @@ import 'package:assignment_1/assignment_1.dart';
 Future main() async {
   final app = Application<Assignment1Channel>()
       ..options.configurationFilePath = "config.yaml"
-      ..options.port = 8888;
+      ..options.port = 5000;
 
   final count = Platform.numberOfProcessors ~/ 2;
   await app.start(numberOfInstances: count > 0 ? count : 1);

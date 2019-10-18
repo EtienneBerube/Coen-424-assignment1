@@ -7,7 +7,6 @@ class Assignment1Channel extends ApplicationChannel {
 
   @override
   Future prepare() async {
-//    CORSPolicy.defaultPolicy.allowedOrigins = ["http://mywebsite.com/"];
     logger.onRecord.listen((rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));
   }
 
@@ -17,7 +16,7 @@ class Assignment1Channel extends ApplicationChannel {
 
 
     router
-        .route("/data/[:type]/[:product]/")
+        .route("/data/:type/:product/")
         .link(() => DataController(dataService));
 
     return router;
