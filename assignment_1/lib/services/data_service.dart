@@ -55,24 +55,6 @@ class DataService {
     return selection.sublist(offset, endIndex).map((row) => row[_getMetricIndex(metric)]).cast<double>().toList();
   }
 
-  int getLastBatchId(String resource, String metric, int batchUnit, int batchId, int batchSize){
-    final selection = _getDataset(resource);
-
-    if (selection == null)
-      throw ValidationException(
-          ["Cannot find data set for ${resource}"]);
-
-    final availableBatches = (selection.length / batchUnit).toInt();
-
-    if (batchSize > (availableBatches - batchId)) {
-      throw ValidationException(
-          ["Cannot get ${batchSize}, only have ${availableBatches} available"]);
-    }
-
-    return (batchId -1) + batchSize;
-  }
-
-
   Future<List<List>> _getFromCSV(String filename) async {
     return await File('lib/resources/${filename}')
         .openRead()

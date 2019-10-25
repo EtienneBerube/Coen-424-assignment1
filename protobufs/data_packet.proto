@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+message ReturnPacket{
+    string rfwId = 1;
+    int32 lastBatchId = 2;
+    repeated double results = 3;
+}

@@ -9,6 +9,7 @@ environment:
 dependencies:
   aqueduct: ^3.0.0
   protobuf: ^1.0.0
+  protoc_plugin: any
   csv: ^4.0.3
 
 dev_dependencies:
