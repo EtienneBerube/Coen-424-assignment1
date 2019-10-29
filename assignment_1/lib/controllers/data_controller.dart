@@ -43,7 +43,7 @@ class DataController extends Controller {
         packet.lastBatchId = lastBatchId;
         packet.results.addAll(data);
 
-        return Response.ok(packet);
+        return Response.ok(packet.writeToBuffer());
       }
     } on ValidationException catch (e) {
       return Response.badRequest(body: {"error": "${e.toString()}"});
