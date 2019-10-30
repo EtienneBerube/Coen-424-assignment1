@@ -14,3 +14,14 @@ const ReturnPacket$json = const {
   ],
 };
 
+const IncomingPacket$json = const {
+  '1': 'IncomingPacket',
+  '2': const [
+    const {'1': 'rfwId', '3': 1, '4': 1, '5': 9, '10': 'rfwId'},
+    const {'1': 'metric', '3': 2, '4': 1, '5': 9, '10': 'metric'},
+    const {'1': 'batchUnit', '3': 3, '4': 1, '5': 5, '10': 'batchUnit'},
+    const {'1': 'batchId', '3': 4, '4': 1, '5': 5, '10': 'batchId'},
+    const {'1': 'batchSize', '3': 5, '4': 1, '5': 5, '10': 'batchSize'},
+  ],
+};
+

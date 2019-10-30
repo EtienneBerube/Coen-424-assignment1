@@ -5,3 +5,11 @@ message ReturnPacket{
     int32 lastBatchId = 2;
     repeated double results = 3;
 }
+
+message IncomingPacket{
+    string rfwId = 1;
+    string metric = 2;
+    int32 batchUnit = 3;
+    int32 batchId = 4;
+    int32 batchSize = 5;
+}

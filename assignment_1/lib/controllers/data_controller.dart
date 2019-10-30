@@ -43,7 +43,9 @@ class DataController extends Controller {
         packet.lastBatchId = lastBatchId;
         packet.results.addAll(data);
 
-        return Response.ok(packet.writeToBuffer());
+        var return_packet = packet.writeToBuffer();
+
+        return Response.ok(return_packet,headers: {"Content-Type": "application/octet-stream"});
       }
     } on ValidationException catch (e) {
       return Response.badRequest(body: {"error": "${e.toString()}"});

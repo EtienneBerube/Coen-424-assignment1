@@ -1,16 +1,16 @@
 import json
 import uuid
-
+import sys
 import requests
 
-from data_packet_pb2 import ReturnPacket
+import data_packet_pb2
 
 loop = True
 
 while loop:
     URL = "http://localhost:80/data/"
     print("Which product:\n1)DVD data\n2)NDBench data\n[ENTER NUMBER] ")
-    product = int(input("Product: "))
+    product = int(input())
 
     if product == 1:
         product = "dvd"
@@ -20,8 +20,8 @@ while loop:
         print("Bad input, start again \n")
         continue
 
-    print("Which data set:\n1)Training\n2)Testing\n[ENTER NUMBER]")
-    set = int(input("Data set: "))
+    print("\nWhich data set:\n1)Training\n2)Testing\n[ENTER NUMBER]")
+    set = int(input())
 
     if set == 1:
         set = "training"
@@ -31,18 +31,18 @@ while loop:
         print("Bad input, start again \n")
         continue
 
-    print("Starting batch \n[ENTER NUMBER]")
+    print("\nStarting batch \n[ENTER NUMBER]")
     batchId = int(input())
 
-    print("Batch size \n[ENTER NUMBER]")
+    print("\nBatch size \n[ENTER NUMBER]")
     batchUnit = int(input())
 
-    print("Number of batches \n[ENTER NUMBER]")
+    print("\nNumber of batches \n[ENTER NUMBER]")
     batchSize = int(input())
 
     print(
-        "Which metric :\n1)CPU Utilization\n2)Network in\n3)Network out\n4)Memory utilization\n5)Final Target[ENTER NUMBER]")
-    metric = int(input("Data set: "))
+        "\nWhich metric :\n1)CPU Utilization\n2)Network in\n3)Network out\n4)Memory utilization\n5)Final Target\n[ENTER NUMBER]")
+    metric = int(input())
 
     if metric == 1:
         metric = "CPUUtilization_Average"
@@ -58,8 +58,8 @@ while loop:
         print("Bad input, start again \n")
         continue
 
-    print("Which Communication protocol :\n1)JSON\n2)Protobuf\n[ENTER NUMBER]")
-    protocol = int(input("Protocol: "))
+    print("\nWhich Communication protocol :\n1)JSON\n2)Protobuf\n[ENTER NUMBER]")
+    protocol = int(input())
 
     if protocol == 1:
         protocol = "json"
@@ -81,15 +81,28 @@ while loop:
 
     url = URL + product + '-' + set + '/' + protocol
 
-    print('Sending to: ' + url)
+    print('\nSending to: ' + url + '\nWith id: ' + rfwId)
 
     data = requests.get(url=url, params=params)
 
+    print("========RESULTS========")
+    print('Response size: ' + str(sys.getsizeof(data.content)))
+
     if (protocol == 'json'):
+
         print(json.dumps(data.json(), sort_keys=True, indent=4))
+
     elif protocol == 'proto':
-        parsed_data = ReturnPacket()
-        print(parsed_data.ParseFromString(data.text))
+        parsed_data = data_packet_pb2.ReturnPacket()
+        print('\nBefore serialization: '+ data.text)
+        parsed_data.ParseFromString(data.content)
+
+        print('\nid: '+ parsed_data.rfwId)
+
+        print('last batch: '+ str(parsed_data.lastBatchId))
+
+        print('results: ['+ ''.join('\n' + str(e) for e in parsed_data.results))
+        print(']')
     else:
         print('Cannot read response')
 

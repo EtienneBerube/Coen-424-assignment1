@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='data_packet.proto',
   package='',
   syntax='proto3',
-  serialized_pb=_b('\n\x11\x64\x61ta_packet.proto\"C\n\x0cReturnPacket\x12\r\n\x05rfwId\x18\x01 \x01(\t\x12\x13\n\x0blastBatchId\x18\x02 \x01(\x05\x12\x0f\n\x07results\x18\x03 \x03(\x01\x62\x06proto3')
+  serialized_pb=_b('\n\x11\x64\x61ta_packet.proto\"C\n\x0cReturnPacket\x12\r\n\x05rfwId\x18\x01 \x01(\t\x12\x13\n\x0blastBatchId\x18\x02 \x01(\x05\x12\x0f\n\x07results\x18\x03 \x03(\x01\"f\n\x0eIncomingPacket\x12\r\n\x05rfwId\x18\x01 \x01(\t\x12\x0e\n\x06metric\x18\x02 \x01(\t\x12\x11\n\tbatchUnit\x18\x03 \x01(\x05\x12\x0f\n\x07\x62\x61tchId\x18\x04 \x01(\x05\x12\x11\n\tbatchSize\x18\x05 \x01(\x05\x62\x06proto3')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -70,7 +70,67 @@ _RETURNPACKET = _descriptor.Descriptor(
   serialized_end=88,
 )
 
+
+_INCOMINGPACKET = _descriptor.Descriptor(
+  name='IncomingPacket',
+  full_name='IncomingPacket',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='rfwId', full_name='IncomingPacket.rfwId', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='metric', full_name='IncomingPacket.metric', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='batchUnit', full_name='IncomingPacket.batchUnit', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='batchId', full_name='IncomingPacket.batchId', index=3,
+      number=4, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='batchSize', full_name='IncomingPacket.batchSize', index=4,
+      number=5, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=90,
+  serialized_end=192,
+)
+
 DESCRIPTOR.message_types_by_name['ReturnPacket'] = _RETURNPACKET
+DESCRIPTOR.message_types_by_name['IncomingPacket'] = _INCOMINGPACKET
 
 ReturnPacket = _reflection.GeneratedProtocolMessageType('ReturnPacket', (_message.Message,), dict(
   DESCRIPTOR = _RETURNPACKET,
@@ -78,6 +138,13 @@ ReturnPacket = _reflection.GeneratedProtocolMessageType('ReturnPacket', (_messag
   # @@protoc_insertion_point(class_scope:ReturnPacket)
   ))
 _sym_db.RegisterMessage(ReturnPacket)
+
+IncomingPacket = _reflection.GeneratedProtocolMessageType('IncomingPacket', (_message.Message,), dict(
+  DESCRIPTOR = _INCOMINGPACKET,
+  __module__ = 'data_packet_pb2'
+  # @@protoc_insertion_point(class_scope:IncomingPacket)
+  ))
+_sym_db.RegisterMessage(IncomingPacket)
 
 
 # @@protoc_insertion_point(module_scope)
