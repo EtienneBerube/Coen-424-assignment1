@@ -8,7 +8,7 @@ import data_packet_pb2
 loop = True
 
 while loop:
-    URL = "http://localhost:80/data/"
+    URL = "https://coen424assignment1.azurewebsites.net/data/"
     print("Which product:\n1)DVD data\n2)NDBench data\n[ENTER NUMBER] ")
     product = int(input())
 
