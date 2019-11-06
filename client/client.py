@@ -16,7 +16,7 @@ time.sleep(60*6)
 print('Done...')
 
 while loop:
-    URL = "http://localhost:80/"
+    URL = "https://coen424assignment1.azurewebsites.net/"
     print("Which product:\n1)DVD data\n2)NDBench data\n[ENTER NUMBER] ")
     product = int(input())
 
