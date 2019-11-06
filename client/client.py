@@ -2,13 +2,21 @@ import json
 import uuid
 import sys
 import requests
+import time
 
 import data_packet_pb2
 
 loop = True
+print('Please note that this assignment is hosted on Azure. As this program is on the free tier, \n'
+      'the VM is closed every time the app goes idle. Therefore, the first request can take up to '
+      '5 minutes to initialize. Please be patient. It works, I promise')
+
+print('Initializing...')
+time.sleep(60*6)
+print('Done...')
 
 while loop:
-    URL = "http://localhost:80/data/"
+    URL = "http://localhost:80/"
     print("Which product:\n1)DVD data\n2)NDBench data\n[ENTER NUMBER] ")
     product = int(input())
 
@@ -83,7 +91,7 @@ while loop:
 
     print('\nSending to: ' + url + '\nWith id: ' + rfwId)
 
-    data = requests.get(url=url, params=params)
+    data = requests.get(url=url+'data/', params=params)
 
     print("========RESULTS========")
     print('Response size: ' + str(sys.getsizeof(data.content)))
