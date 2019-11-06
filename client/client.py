@@ -5,7 +5,7 @@ import requests
 import time
 
 import data_packet_pb2
-URL = "https://coen424assignmentmodels.azurewebsites.net/"
+URL = "https://coen424models.azurewebsites.net/"
 loop = True
 
 print('Please note that this assignment is hosted on Azure. As this program is on the free tier, \n'

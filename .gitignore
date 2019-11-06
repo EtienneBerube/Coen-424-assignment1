@@ -13,3 +13,5 @@ pubspec.lock
 doc/api/
 
 client/.idea/
+
+.idea/libraries/

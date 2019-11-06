@@ -7,6 +7,6 @@ ADD . /app/
 RUN pub get --offline --no-precompile
 
 WORKDIR /app
-EXPOSE 8080
+EXPOSE 8000
 
-ENTRYPOINT ["pub", "run", "aqueduct:aqueduct", "serve", "--port", "8080"]
+ENTRYPOINT ["pub", "run", "aqueduct:aqueduct", "serve", "--port", "8000"]
