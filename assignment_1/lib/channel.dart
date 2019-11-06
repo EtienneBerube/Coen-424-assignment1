@@ -25,7 +25,7 @@ class Assignment1Channel extends ApplicationChannel {
     .linkFunction((request) {
       print(request.attachments.toString());
       print(request.raw.requestedUri.query);
-      return Response.ok("HIHI");
+      return Response.ok("working");
     });
 
     return router;

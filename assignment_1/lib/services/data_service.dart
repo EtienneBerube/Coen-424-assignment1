@@ -7,8 +7,8 @@ import 'package:aqueduct/aqueduct.dart';
 class DataService {
   static const _metrics = [
     "cpuutilization_average",
-    "networkIn_average",
-    "networkOut_average",
+    "networkin_average",
+    "networkout_average",
     "memoryutilization_average",
     "final_target"
   ];

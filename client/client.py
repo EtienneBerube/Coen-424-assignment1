@@ -5,18 +5,28 @@ import requests
 import time
 
 import data_packet_pb2
-
+URL = "https://coen424assignmentmodels.azurewebsites.net/"
 loop = True
+
 print('Please note that this assignment is hosted on Azure. As this program is on the free tier, \n'
       'the VM is closed every time the app goes idle. Therefore, the first request can take up to '
       '5 minutes to initialize. Please be patient. It works, I promise')
 
 print('Initializing...')
-time.sleep(60*6)
-print('Done...')
+while(True):
+    init_server = requests.get(url=URL, timeout=(6*60, 6*60))
+    init_server.encoding = 'utf-8'
+    if(init_server.text == '"working"'):
+        print('Done...')
+        break
+    else:
+        print('Could not reach server, trying again')
+        time.sleep(30)
+
+
 
 while loop:
-    URL = "https://coen424assignment1.azurewebsites.net/"
+
     print("Which product:\n1)DVD data\n2)NDBench data\n[ENTER NUMBER] ")
     product = int(input())
 
@@ -87,11 +97,11 @@ while loop:
         "batchSize": batchSize
     }
 
-    url = URL + product + '-' + set + '/' + protocol
+    url = URL + 'data/' + product + '-' + set + '/' + protocol
 
     print('\nSending to: ' + url + '\nWith id: ' + rfwId)
 
-    data = requests.get(url=url+'data/', params=params)
+    data = requests.get(url=url, params=params)
 
     print("========RESULTS========")
     print('Response size: ' + str(sys.getsizeof(data.content)))
